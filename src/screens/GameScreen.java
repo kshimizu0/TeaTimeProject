@@ -192,7 +192,7 @@ public class GameScreen extends Screen {
 				"whatifwe.mp3", "dearmydarling.mp3", "sogood.mp3","doubletake.mp3","infrunami.mp3","besideyou.mp3",
 				"tiramisu.mp3","RUDE!.mp3", "gluesong.mp3", "thatsmygirl.mp3", "venus.mp3","yourockmyworld.mp3","sourgrapes.mp3",
 				"highschoolboy.mp3", "stillwithyou.mp3", "moonstruck.mp3", "besttime.mp3", "justadreamSnippet.mp3", 
-				"dandelions.mp3", "warrr.mp3", "lovelee.mp3", "buddahlovaz.mp3"
+				"dandelions.mp3", "warrr.mp3", "lovelee.mp3", "buddahlovaz.mp3", "crush.mp3",
 				};
 		
 		for(int i = 0; i < soundEffects.length; i++) {
