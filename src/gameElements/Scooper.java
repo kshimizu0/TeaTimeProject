@@ -9,7 +9,7 @@ import processing.core.PImage;
 /**
  * Represents a Scooper object
  * @author Keira Shimizu
- * @version 5-25-26
+ * @version 6-11-26
  */
 public class Scooper {
 	
