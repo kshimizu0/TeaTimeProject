@@ -1,2 +1,2 @@
-# teatime
+# TeaTimeProject
 Fun boba game!
