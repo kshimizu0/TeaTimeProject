@@ -1,6 +1,6 @@
 # TeaTime
-# Authors: Cindy, Varshini, Keira
-# Revision: May 23, 2026
+#### Authors: Cindy, Varshini, Keira
+#### Revision: May 23, 2026
 
 # Introduction:
 You have been trapped by a mysterious person, forcing you to run a boba shop! If you wish for
