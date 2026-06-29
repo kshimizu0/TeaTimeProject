@@ -17,7 +17,7 @@ import jay.jaysound.JayLayer;
  * This screen handles the game logic like drink creation, timing, and customer interactions
  * 
  * @author Cindy Cheng, Keira Shimizu, Varshini Raja
- * @version 6-11-26
+ * @version 6-29-26
  */
 public class GameScreen extends Screen {
 	
@@ -191,8 +191,8 @@ public class GameScreen extends Screen {
 				, "it's you.mp3", "thecutestpair.mp3", "lovewithyou.mp3", 
 				"whatifwe.mp3", "dearmydarling.mp3", "sogood.mp3","doubletake.mp3","infrunami.mp3","besideyou.mp3",
 				"tiramisu.mp3","RUDE!.mp3", "gluesong.mp3", "thatsmygirl.mp3", "venus.mp3","yourockmyworld.mp3","sourgrapes.mp3",
-				"highschoolboy.mp3", "stillwithyou.mp3", "moonstruck.mp3", "besttime.mp3", "justadreamSnippet.mp3", 
-				"dandelions.mp3", "warrr.mp3", "lovelee.mp3", "buddahlovaz.mp3", "crush.mp3",
+				"highschoolboy.mp3", "stillwithyou.mp3", "moonstruck.mp3", "besttime.mp3", "justadream.mp3", 
+				"dandelions.mp3", "warrr.mp3", "lovelee.mp3", "crush.mp3", "h4rdfeelings.mp3",
 				};
 		
 		for(int i = 0; i < soundEffects.length; i++) {
