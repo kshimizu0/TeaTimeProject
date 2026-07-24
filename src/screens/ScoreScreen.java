@@ -11,7 +11,7 @@ import processing.core.PImage;
 /**
  * represents the screen where the user will poke the straw and receive their score
  * @author Cindy Cheng, Keira Shimizu
- * @version 5-25-26
+ * @version 7-23-26
  */
 public class ScoreScreen extends Screen{
 	private ArrayList<PImage> images;
@@ -21,7 +21,7 @@ public class ScoreScreen extends Screen{
 	private Concoction finishedDrink;
 	private Straw straw;
 	private int step, drawCount, score, dingCount;
-	private boolean soundPlayed, drumPlayed;
+	private boolean soundPlayed, drumPlayed, trialRunning;
 	
 	private static final int STARTUP = 1, TIMER_GOING = 2, END = 3;
 	private int phase;
@@ -44,6 +44,7 @@ public class ScoreScreen extends Screen{
 		phase = STARTUP;
 		display();
 		soundPlayed = false;
+		trialRunning = true;
 		
 	}
 	
@@ -86,6 +87,20 @@ public class ScoreScreen extends Screen{
 		surface.image(drinkParts[2], 360, 68, 480, 480);
 		surface.image(drinkParts[1], 360, 68, 480, 480);
 		straw.draw(surface);
+		
+		if(trialRunning && !straw.isPoked()) {
+			surface.noStroke();
+			surface.fill(245, 240, 186);
+			surface.rect(100, 250, 250, 100, 10);
+			surface.textSize(20);
+			surface.textAlign(surface.CENTER, surface.CENTER);
+			surface.fill(191, 158, 10);
+			surface.text("Click anywhere to insert the straw.", 115, 250, 220, 100);
+		}
+		
+		if(straw.isPoked()) {
+			trialRunning = false;
+		}
 		
 		if (phase == STARTUP) {
 		} else if (phase == TIMER_GOING) {

@@ -17,7 +17,7 @@ import jay.jaysound.JayLayer;
  * This screen handles the game logic like drink creation, timing, and customer interactions
  * 
  * @author Cindy Cheng, Keira Shimizu, Varshini Raja
- * @version 6-29-26
+ * @version 7-23-26
  */
 public class GameScreen extends Screen {
 	
@@ -40,10 +40,11 @@ public class GameScreen extends Screen {
 	
 	private PFont milkChoco;
 	
-	private int level, phase, resetCount, numCoins, count, iceIndex;
+	private int level, phase, resetCount, numCoins, count, iceIndex, textScoopCount;
 	
 	private long startTime, levelTime;
-	private boolean teaClicked, iceFalling, playedIceSound, drawText, drawBook;
+	private boolean teaClicked, iceFalling, playedIceSound, drawText, drawBook, runTutorial;
+	private boolean textScoop1, textScoop2; 
 	
 	private static final int STARTUP = 1, TIMER_GOING = 2, RESULTS = 3;
 
@@ -133,6 +134,7 @@ public class GameScreen extends Screen {
 		iceXMax = new boolean[5];
 		
 		songCount = 0;
+		runTutorial = true;
 		
 	}
 
@@ -237,6 +239,53 @@ public class GameScreen extends Screen {
 			surface.image(counter, 0, 0, 1200, 600);
 		}
 		
+		//tutorial text
+		surface.push();
+		if (runTutorial) {
+			surface.noStroke();
+			surface.fill(189, 228, 240);
+			surface.rect(180, 50, 250, 100, 10);
+			surface.textSize(20);
+			surface.textAlign(surface.CENTER, surface.CENTER);
+			surface.fill(28, 47, 69);
+			
+			if (level == 0) {
+				surface.text("Click on the customer to receive their order!", 195, 50, 220, 100);
+			}else if((level == 1 || level == 2) && textScoopCount < 2) {
+				if(scooper.getStep() == 1) {
+					surface.text("Click on the scooper HANDLE.", 195, 50, 220, 100);
+				}else if(scooper.getStep() == 2) {
+					textScoop1 = false;
+					surface.text("Click on the desired topping, that is displayed in the order.", 195, 50, 220, 100);
+				}else if(scooper.getStep() == 3) {
+					surface.text("Click the upper half of the cup to drop the toppings.", 195, 50, 220, 100);
+				}else if(scooper.getStep() == 4) {
+					if (!textScoop1) {
+						textScoopCount++;
+					}
+					textScoop1 = true;
+				}
+				
+			}else if(level == 3) {
+				surface.text("Click the desired sugar level.", 195, 50, 220, 100);
+				textScoopCount = 0;
+			}else if(textScoopCount == 2) {
+				surface.text("Click the desired ice level.", 195, 50, 220, 100);
+			}else if(level == 4) {
+				surface.text("HOLD on the desired tea flavor until the line is reached.", 195, 50, 220, 100);
+			}else if(level == 5) {
+				surface.text("Click the green check mark button.", 195, 50, 220, 100);
+			}else if(level == 7) {
+				surface.text("Click on the customer to serve the drink.", 195, 50, 220, 100);
+			}else if(level == 8) {
+				surface.text("Click the cash register to store the coins.", 195, 50, 220, 100);
+			}else {
+				runTutorial = false;
+			}
+			
+		}
+		surface.pop();
+		
 		//instructions book
 		if (drawBook) {
 			//System.out.println("draw book");
@@ -292,33 +341,6 @@ public class GameScreen extends Screen {
 				if (height > 250)
 					height = 250;
 				teaFall.drawCupFill(surface, height, 795, 420, 180);
-				//if (height > 75) {
-				//if (height > 120) {
-//					for (int i = 0; i < iceCubes.size() - 1; i++) {
-//						for (int j = i + 1; j < iceCubes.size(); j++) {
-//							iceCubes.get(i).floatIce(true, iceCubes.get(j), height);
-//						}
-//					}
-						//boolean isStacked = false;
-//					for (PhysicsIce e : iceCubes)
-//						if((420 - height) < (e.getY()))
-//						if(!(userDrink.fillHeight(levelTime - 1600) > e.getY()))
-//						if(!(userDrink.fillHeight(levelTime - 2700) > e.getY())) {
-//								System.out.println(i);
-//								System.out.println(iceCubes.get(j).getX());
-//								System.out.println(iceCubes.get(i).getX());
-//								System.out.println("");
-//								if (iceCubes.get(i).getX() == iceCubes.get(j).getX() && iceCubes.get(i).getY() != iceCubes.get(j).getY()) {
-//									if ((420 + 35) - height < iceCubes.get(i).getY()) {
-//										System.out.println("yes");
-//										iceCubes.get(i).floatIce(true);
-//										isStacked = true;
-//									}
-//								} 
-//							} 
-//							if (!isStacked)
-//							e.floatIce(true, e, height);
-//						}
 					for (PhysicsIce e : iceCubes) {
 						if (420 - height < e.getY())
 							e.floatIce(true, height);
@@ -480,8 +502,14 @@ public class GameScreen extends Screen {
 	 */
 	public void spawnCustomer() {
 		order = new Order();
-		userDrink = new Concoction(order.getDrink());
 		customer = Customer.randomCustomer(customers);
+		if (runTutorial) {
+			order.getDrink().setNumScoops(2);
+			while (customer.getType().equals("wolf")) {
+				customer = Customer.randomCustomer(customers);
+			}
+		}
+		userDrink = new Concoction(order.getDrink());
 		level = 0;
 		activateButtons();
 		drawText = false;
@@ -800,7 +828,7 @@ public class GameScreen extends Screen {
 		int iceLevel = 0;
 		int[] iceXVals = {795, 831, 867, 903, 939};
 		for(int i = 0; i <= 4; i++) {
-			if (buttons.get(i).isClicked(surface.mouseX, surface.mouseY) && buttons.get(i).isActive() && !scooper.isDropping() && (scooper.getStep() == 2  || scooper.getStep() == 1)) {
+			if (buttons.get(i).isClicked(surface.mouseX, surface.mouseY) && buttons.get(i).isActive() && !scooper.isDropping() && scooper.getStep() == 2) {
 				iceLevel = (i + 1) * 10;
 				userDrink.setIceLevel(iceLevel);
 				level = 3;
