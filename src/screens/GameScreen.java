@@ -256,7 +256,7 @@ public class GameScreen extends Screen {
 					surface.text("Click on the scooper HANDLE.", 195, 50, 220, 100);
 				}else if(scooper.getStep() == 2) {
 					textScoop1 = false;
-					surface.text("Click on the desired topping, that is displayed in the order.", 195, 50, 220, 100);
+					surface.text("Click on the desired topping that is displayed on the order.", 195, 50, 220, 100);
 				}else if(scooper.getStep() == 3) {
 					surface.text("Click the upper half of the cup to drop the toppings.", 195, 50, 220, 100);
 				}else if(scooper.getStep() == 4) {
