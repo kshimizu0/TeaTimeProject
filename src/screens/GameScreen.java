@@ -28,7 +28,7 @@ public class GameScreen extends Screen {
 	
 	private ArrayList<PImage> teaImgs, sugarPetals;
 	private PImage background, emptyCup, teaLine, coins, 
-						coinBar, receipt, dispenser, counter, sugarClicked, bookmark, book;
+						coinBar, receipt, dispenser, counter, sugarClicked, bookmark, book, tipJar;
 
 	
 	private Customer customer;
@@ -40,7 +40,7 @@ public class GameScreen extends Screen {
 	
 	private PFont milkChoco;
 	
-	private int level, phase, resetCount, numCoins, count, iceIndex, textScoopCount;
+	private int level, phase, resetCount, numCoins, count, iceIndex, textScoopCount, addCoinsCount;
 	
 	private long startTime, levelTime;
 	private boolean teaClicked, iceFalling, playedIceSound, drawText, drawBook, runTutorial;
@@ -181,6 +181,7 @@ public class GameScreen extends Screen {
 		sugarPetals.add(surface.loadImage("sugarPetals/100sugarLeaf.png"));
 		
 		coins = surface.loadImage("gameScreen/coins.png");
+		tipJar = surface.loadImage("gameScreen/tipJar.png");
 		
 		//load audio files and add to the arrays
 		effectsPlayer = new JayLayer("audio/","audio/",true);
@@ -238,7 +239,7 @@ public class GameScreen extends Screen {
 		if (!(customer.getType().equals("bunny") || customer.getType().equals("capybara"))) {
 			surface.image(counter, 0, 0, 1200, 600);
 		}
-		
+		surface.image(tipJar, 370, 340, 310, 310);
 		//tutorial text
 		surface.push();
 		if (runTutorial) {
@@ -425,6 +426,13 @@ public class GameScreen extends Screen {
 			
 			//draw textbox
 			activateButtons();
+		}
+		
+		if (addCoinsCount > 0 && addCoinsCount < 30) {
+			surface.textSize(30);
+			surface.fill(255, 247, 157);
+			surface.text("+" + (finishedDrink.getPrice() + (int) ((finishedDrink.score() / 100.0) * 15)), 90, 355);
+			addCoinsCount++;
 		}
 		
 		if(level == 9) {
@@ -662,6 +670,8 @@ public class GameScreen extends Screen {
 					effectsPlayer.playSoundEffect(13);
 				}
 				level = 9;
+				addCoinsCount = 1;
+				
 			}
 			else if (buttons.get(22).isClicked(surface.mouseX, surface.mouseY) && buttons.get(22).isActive()) {
 				drawBook = true;
